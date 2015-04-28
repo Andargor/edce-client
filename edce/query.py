@@ -29,7 +29,7 @@ def submitProfile(s):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> submitProfile")
 	url = edce.config.ConfigSectionMap('urls')['url_profile']
-	r = s.get(url, verify=False)
+	r = s.get(url, verify=True)
 	if r.status_code == requests.codes.ok:
 		s.cookies.save()
 		return r.text
@@ -44,7 +44,7 @@ def submitLogin(s, u, p):
 		print(">>>>>>>>>>>>>>>> submitLogin")
 	url = edce.config.ConfigSectionMap('urls')['url_login']
 	payload = { 'email' : u, 'password' : p }
-	r = s.post(url, data=payload, verify=False)
+	r = s.post(url, data=payload, verify=True)
 	if r.status_code == requests.codes.ok:
 		s.cookies.save()
 		return r.text
@@ -64,7 +64,7 @@ def submitVerification(s):
 	if code:
 		url = edce.config.ConfigSectionMap('urls')['url_verification']
 		payload = { 'code' : code }
-		r = s.post(url, data=payload, verify=False)
+		r = s.post(url, data=payload, verify=True)
 		if r.status_code == requests.codes.ok:
 			s.cookies.save()
 			return r.text

@@ -19,7 +19,7 @@ def submitEDDN(data):
 		print(">>>>>>>>>>>>>>>> submitEDDN")
 	url = edce.config.ConfigSectionMap('urls')['url_eddn']
 	headers = { 'content-type' : 'application/json; charset=utf8' }
-	r = requests.post(url, data=json.dumps(data), verify=False)
+	r = requests.post(url, data=json.dumps(data), verify=True)
 	if r.status_code == requests.codes.ok:
 		return r.text
 	else:
