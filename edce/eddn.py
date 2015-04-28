@@ -48,26 +48,28 @@ def postMarketData(data):
 	if username == '':
 		errstr = "Error: EDDN postMarketData FAIL no username"
 		raise edce.error.ErrorEDDN(errstr)
-		
+	
+	if "docked" in data.commander and data.commander.docked:
+		pass
+	else:
+		errstr = "Error: EDDN postMarketData FAIL pilot must be docked"
+		raise edce.error.ErrorEDDN(errstr)
+	
 	try:
-		if data.commander.docked:
-			clientID = hashlib.sha224(username.encode('utf-8')).hexdigest()
-			st = datetime.datetime.utcnow().isoformat()
-			system = data.lastSystem.name
-			station = data.lastStarport.name
-			
-			for commodity in data.lastStarport.commodities:
-				message = {"header": {"softwareVersion": edce.globals.version, "softwareName": edce.globals.name, "uploaderID": clientID}, "$schemaRef": "http://schemas.elite-markets.net/eddn/commodity/1/test", "message": {"buyPrice": math.floor(commodity.buyPrice), "timestamp": st, "stationStock": math.floor(commodity.stock), "systemName": system, "stationName": station, "demand":  math.floor(commodity.demand), "sellPrice": math.floor(commodity.sellPrice), "itemName": commodity.name}}
-				if commodity.demandBracket > 0:
-					message['message']['demandLevel'] = getBracket(commodity.demandBracket)
-				elif commodity.stockBracket > 0:
-					message['message']['supplyLevel'] = getBracket(commodity.stockBracket)
-				submitEDDN(message)
-		else:
-			errstr = "Error: EDDN postMarketData FAIL pilot must be docked"
-			raise edce.error.ErrorEDDN(errstr)
+		clientID = hashlib.sha224(username.encode('utf-8')).hexdigest()
+		st = datetime.datetime.utcnow().isoformat()
+		system = data.lastSystem.name
+		station = data.lastStarport.name
+		
+		for commodity in data.lastStarport.commodities:
+			message = {"header": {"softwareVersion": edce.globals.version, "softwareName": edce.globals.name, "uploaderID": clientID}, "$schemaRef": "http://schemas.elite-markets.net/eddn/commodity/1/test", "message": {"buyPrice": math.floor(commodity.buyPrice), "timestamp": st, "stationStock": math.floor(commodity.stock), "systemName": system, "stationName": station, "demand":  math.floor(commodity.demand), "sellPrice": math.floor(commodity.sellPrice), "itemName": commodity.name}}
+			if commodity.demandBracket > 0:
+				message['message']['demandLevel'] = getBracket(commodity.demandBracket)
+			elif commodity.stockBracket > 0:
+				message['message']['supplyLevel'] = getBracket(commodity.stockBracket)
+			submitEDDN(message)
 	except:
-		errstr = "Error: EDDN postMarketData FAIL Unknown error"
+		errstr = "Error: EDDN postMarketData FAIL submit error"
 		raise edce.error.ErrorEDDN(errstr)
 		
 
