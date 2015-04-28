@@ -26,3 +26,6 @@ class ErrorVerification(Error):
 		
 class ErrorEDDN(Error):
 	pass		
+
+class ErrorLog(Error):
+	pass			

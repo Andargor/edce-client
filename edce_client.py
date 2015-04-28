@@ -18,9 +18,12 @@ edce.globals.debug = False
 
 try:
 	res = edce.query.performQuery()
-	edce.util.writeLog(res)
+	
 	
 	data = edce.util.edict(res)
+	
+	edce.util.writeJSONLog(data.commander.name,data.lastSystem.name,data)
+	
 	shipId = "%s" % data.commander.currentShipId
 	station = ""
 	if data.commander.docked:

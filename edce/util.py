@@ -6,6 +6,7 @@ if sys.version_info.major < 3:
 import json	
 import datetime
 import lzma
+import edce.error
 
 class edict(dict):
     # based on class dotdict(dict):  # from http://stackoverflow.com/questions/224026/dot-notation-for-dictionary-keys
@@ -31,7 +32,18 @@ class edict(dict):
             else:
                 return value
 
-def writeLog(data):
-	logfile = "log/edce-{:%Y%m%d%H%M%S}.xz".format(datetime.datetime.utcnow())
-	with lzma.open(logfile, "w") as f:
-		f.write(bytes(data, 'UTF-8'))
+def writeLog(filename, data):
+	try:
+		with lzma.open(filename, "w") as f:
+			f.write(bytes(data, 'UTF-8'))
+	except:
+		errstr = "Error: writeLog FAIL"
+		raise edce.error.ErrorLog(errstr)		
+				
+def writeJSONLog(name,system,data):
+	try:
+		logfile = "log/edce-{n}-{s}-{d:%Y%m%d%H%M%S}.xz".format(n=name, s=system, d=datetime.datetime.utcnow())
+		writeLog(logfile, json.dumps(data))
+	except:
+		errstr = "Error: writeJSONLog FAIL"
+		raise edce.error.ErrorLog(errstr)		
