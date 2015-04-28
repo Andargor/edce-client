@@ -24,4 +24,4 @@ The EDCE client queries your Commander data on the Elite Dangerous Companion sit
 
 * Protect your edce.ini file as it contains your Frontier store credentials in unencrypted form
 * Avoid querying the Elite Dangerous Companion site too often in order to avoid overloading it. As a rule, try not to query more than once every 2-3 minutes.
-* You can modify the code as you wish, the edce subdirectory contains the core module to access the Elite Dangerous Companion
+* You can modify the code as you wish, the [edce](https://github.com/Andargor/edce-client/tree/master/edce) subdirectory contains the core module to access the Elite Dangerous Companion
