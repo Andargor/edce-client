@@ -20,17 +20,17 @@ try:
 	res = edce.query.performQuery()
 	edce.util.writeLog(res)
 	
-	json_res = edce.util.edict(res)
-	shipId = "%s" % json_res.commander.currentShipId
+	data = edce.util.edict(res)
+	shipId = "%s" % data.commander.currentShipId
 	station = ""
-	if json_res.commander.docked:
-		station = "/" + json_res.lastStarport.name
-	print("CMDR:\t" + json_res.commander.name)
-	print("System:\t" + json_res.lastSystem.name + station)
-	print("Ship:\t" + json_res.ships[shipId].name)
+	if data.commander.docked:
+		station = "/" + data.lastStarport.name
+	print("CMDR:\t" + data.commander.name)
+	print("System:\t" + data.lastSystem.name + station)
+	print("Ship:\t" + data.ships[shipId].name)
 	
 	print("Attempting to post market data to EDDN...")
-	edce.eddn.postMarketData(json_res)
+	edce.eddn.postMarketData(data)
 	print("Done.")
 	
 except edce.error.Error as e:
