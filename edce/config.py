@@ -24,13 +24,14 @@ def ConfigSectionMap(section):
 				dict1[option] = None
 				raise edce.error.ErrorConfig('Please run client-setup.py to generate the configuration file.')
 	except:
-		raise edce.error.ErrorConfig('Please run setup.py to generate the configuration file.')
+		raise edce.error.ErrorConfig('Please run client-setup.py to generate the configuration file.')
 	return dict1
 
 def performSetup():
 	username = input("Username (leave empty to be prompted at runtime): ").strip()
 	password = getpass.getpass('Password (leave empty to be prompted at runtime): ').strip()
-
+	enableEDDN = input("Send market data to EDDN. No private information is sent. [Y/n]: ").strip().lower()
+		
 	Config = configparser.ConfigParser()
 	
 	Config.add_section('login')
@@ -43,6 +44,12 @@ def performSetup():
 	Config.set('urls','url_profile','https://companion.orerve.net/profile')
 	Config.set('urls','url_eddn','http://eddn-gateway.elite-markets.net:8080/upload/')
 
+	Config.add_section('preferences')
+	if enableEDDN == '' or enableEDDN == 'y':
+		Config.set('preferences','enable_eddn','Yes')
+	else:
+		Config.set('preferences','enable_eddn','No')
+	
 	cfgfile = open('edce.ini','w')
 	Config.write(cfgfile)
 	cfgfile.close()

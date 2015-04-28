@@ -30,6 +30,11 @@ def postMarketData(data):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> postMarketData")
 
+	enable = edce.config.ConfigSectionMap('preferences')['enable_eddn']
+	if enable.lower() != 'yes':
+		errstr = "Error: EDDN postMarketData FAIL, EDDN is disabled in edce.ini"
+		raise edce.error.ErrorEDDN(errstr)		
+		
 	username=edce.config.ConfigSectionMap('login')['username']
 	if username == '':
 		errstr = "Error: EDDN postMarketData FAIL no username"
