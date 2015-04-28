@@ -24,8 +24,10 @@ try:
 	shipId = "%s" % json_res.commander.currentShipId
 	station = ""
 	if json_res.commander.docked:
-		station = " Last Station: " + json_res.lastStarport.name
-	print("CMDR: " + json_res.commander.name + " System: " + json_res.lastSystem.name + station + " Ship: " + json_res.ships[shipId].name)
+		station = "/" + json_res.lastStarport.name
+	print("CMDR:\t" + json_res.commander.name)
+	print("System:\t" + json_res.lastSystem.name + station)
+	print("Ship:\t" + json_res.ships[shipId].name)
 	
 	print("Attempting to post market data to EDDN...")
 	edce.eddn.postMarketData(json_res)
