@@ -3,9 +3,9 @@ Elite Dangerous Companion Emulator
 
 ## Purpose
 
-This is an interface that emulates an iPhone accessing the Elite Dangerous Companion, which is a mobile application developed by Frontier Developments. This experimental code has not been created in association with [Frontier Developments](http://www.frontier.co.uk/) and is unsupported by them.
+This is an interface that emulates an iPhone accessing the [Elite Dangerous Companion](https://itunes.apple.com/gb/app/elite-dangerous/id897148481?mt=8) web API, which is accessed by a mobile application developed by Frontier Developments. This experimental code has not been created in association with [Frontier Developments](http://www.frontier.co.uk/) and is unsupported by them.
 
-The edce client queries your Commander data on the Elite Dangerous Companion site as you would on your iPhone, and retrieves the data (in JSON format). It also publishes market data to [EDDN](https://github.com/jamesremuscat/EDDN/wiki).
+The edce client queries your Commander data on the Elite Dangerous Companion site as you would on your iPhone, and retrieves the data to file in JSON format. It also publishes market data to [EDDN](https://github.com/jamesremuscat/EDDN/wiki). No private information is published.
 
 ## Installation
 
@@ -24,3 +24,4 @@ The edce client queries your Commander data on the Elite Dangerous Companion sit
 
 * Protect your edce.ini file as it contains your Frontier store credentials in unencrypted form
 * Avoid querying the Elite Dangerous Companion site too often in order to avoid overloading it. As a rule, try not to query more than once every 2-3 minutes.
+* You can modify the code as you wish, the edce subdirectory contains the core module to access the Elite Dangerous Companion
