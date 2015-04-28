@@ -27,7 +27,7 @@ try:
 		station = " Last Station: " + json_res.lastStarport.name
 	print("CMDR: " + json_res.commander.name + " System: " + json_res.lastSystem.name + station + " Ship: " + json_res.ships[shipId].name)
 	
-	#edce.eddn.postMarketData(json_res)
+	edce.eddn.postMarketData(json_res)
 	
 except edce.error.Error as e:
 	print("EDCE: " + e.message)
