@@ -17,6 +17,6 @@ This is an interface that emulates an iPhone accessing the Elite Dangerous Compa
 * Launch the client: python3 edce_client.py
 * The first time you run the program, the Elite Dangerous Companion website will request a verification code, which shall be sent to your account email. Enter the code at the prompt. You should only have to do this once
 * The program will query your Commander's data, and dump the result in the log directory (LZMA compressed, can be examined by 7-zip)
-* The program will also post the market data from the current station where your Commander is docked to EDDN(https://github.com/jamesremuscat/EDDN/wiki). If he/she is not docked, the data is not sent.
+* The program will also post the market data from the current station where your Commander is docked to [EDDN](https://github.com/jamesremuscat/EDDN/wiki). If he/she is not docked, the data is not sent.
 
 
