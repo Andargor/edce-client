@@ -3,7 +3,7 @@ Elite Dangerous Companion Emulator
 
 ## Purpose
 
-This is an interface that emulates an iPhone accessing the Elite Dangerous Companion, which is a mobile application developed by Frontier Developments. This experimental product has not been created in association with [Frontier Developments](http://www.frontier.co.uk/) and is unsupported by them.
+This is an interface that emulates an iPhone accessing the Elite Dangerous Companion, which is a mobile application developed by Frontier Developments. This experimental code has not been created in association with [Frontier Developments](http://www.frontier.co.uk/) and is unsupported by them.
 
 
 ## Installation
