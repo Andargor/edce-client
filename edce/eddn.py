@@ -26,6 +26,15 @@ def submitEDDN(data):
 		errstr = "Error: EDDN submitEDDN FAIL %s" % r.status_code
 		raise edce.error.ErrorEDDN(errstr)	
 
+def getBracket(level):
+	if level == 1:
+		return "Low"
+	elif level == 2:
+		return "Med"
+	elif level == 3:
+		return "High"
+	return ""
+		
 def postMarketData(data):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> postMarketData")
@@ -46,8 +55,13 @@ def postMarketData(data):
 			st = datetime.datetime.utcnow().isoformat()
 			system = data.lastSystem.name
 			station = data.lastStarport.name
+			
 			for commodity in data.lastStarport.commodities:
 				message = {"header": {"softwareVersion": edce.globals.version, "softwareName": edce.globals.name, "uploaderID": clientID}, "$schemaRef": "http://schemas.elite-markets.net/eddn/commodity/1/test", "message": {"buyPrice": math.floor(commodity.buyPrice), "timestamp": st, "stationStock": math.floor(commodity.stock), "systemName": system, "stationName": station, "demand":  math.floor(commodity.demand), "sellPrice": math.floor(commodity.sellPrice), "itemName": commodity.name}}
+				if commodity.demandBracket > 0:
+					message['message']['demandLevel'] = getBracket(commodity.demandBracket)
+				elif commodity.stockBracket > 0:
+					message['message']['supplyLevel'] = getBracket(commodity.stockBracket)
 				submitEDDN(message)
 		else:
 			errstr = "Error: EDDN postMarketData FAIL pilot must be docked"
