@@ -18,7 +18,7 @@ def checkInteractive():
 	ok = True
 	try:
 		if edce.globals.interactive == False:
-			if edce.config.ConfigSectionMap('login')['username'] == '' or edce.config.ConfigSectionMap('login')['password'] == '':
+			if edce.config.getString('login','username') == '' or edce.config.getString('login','password') == '':
 				ok = False
 	except:
 		ok = False
@@ -28,7 +28,7 @@ def checkInteractive():
 def submitProfile(s):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> submitProfile")
-	url = edce.config.ConfigSectionMap('urls')['url_profile']
+	url = edce.config.getString('urls','url_profile')
 	r = s.get(url, verify=True)
 	if r.status_code == requests.codes.ok:
 		s.cookies.save()
@@ -42,7 +42,7 @@ def submitProfile(s):
 def submitLogin(s, u, p):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> submitLogin")
-	url = edce.config.ConfigSectionMap('urls')['url_login']
+	url = edce.config.getString('urls','url_login')
 	payload = { 'email' : u, 'password' : p }
 	r = s.post(url, data=payload, verify=True)
 	if r.status_code == requests.codes.ok:
@@ -62,7 +62,7 @@ def submitVerification(s):
 	code = code_raw.strip()
 	
 	if code:
-		url = edce.config.ConfigSectionMap('urls')['url_verification']
+		url = edce.config.getString('urls','url_verification')
 		payload = { 'code' : code }
 		r = s.post(url, data=payload, verify=True)
 		if r.status_code == requests.codes.ok:
@@ -126,8 +126,8 @@ def performQuery(s=None):
 	if session is None:
 		session = initSession()
 	
-	username=edce.config.ConfigSectionMap('login')['username']
-	password=edce.config.ConfigSectionMap('login')['password']	
+	username=edce.config.getString('login','username')
+	password=edce.config.getString('login','password')	
 	
 	checkInteractive()
 	

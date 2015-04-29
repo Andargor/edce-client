@@ -17,7 +17,7 @@ import edce.error
 def submitEDDN(data):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> submitEDDN")
-	url = edce.config.ConfigSectionMap('urls')['url_eddn']
+	url = edce.config.getString('urls','url_eddn')
 	headers = { 'content-type' : 'application/json; charset=utf8' }
 	r = requests.post(url, data=json.dumps(data), verify=True)
 	if r.status_code == requests.codes.ok:
@@ -39,12 +39,12 @@ def postMarketData(data):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> postMarketData")
 
-	enable = edce.config.ConfigSectionMap('preferences')['enable_eddn']
+	enable = edce.config.getString('preferences','enable_eddn')
 	if enable.lower() != 'yes':
 		errstr = "Error: EDDN postMarketData FAIL, EDDN is disabled in edce.ini"
 		raise edce.error.ErrorEDDN(errstr)		
 		
-	username=edce.config.ConfigSectionMap('login')['username']
+	username=edce.config.getString('login','username')
 	if username == '':
 		errstr = "Error: EDDN postMarketData FAIL no username"
 		raise edce.error.ErrorEDDN(errstr)

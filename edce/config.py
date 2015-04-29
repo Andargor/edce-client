@@ -27,9 +27,17 @@ def ConfigSectionMap(section):
 		raise edce.error.ErrorConfig('Please run client-setup.py to generate the configuration file.')
 	return dict1
 
+def getString(section, key):
+	res = ''
+	try:
+		res = edce.config.ConfigSectionMap(section)[key]
+	except:
+		raise edce.error.ErrorConfig('Please run client-setup.py to generate the configuration file.')	
+	return res
+	
 def performSetup():
-	username = input("Username (leave empty to be prompted at runtime): ").strip()
-	password = getpass.getpass('Password (leave empty to be prompted at runtime): ').strip()
+	username = input("Frontier Store Username (leave empty to be prompted at runtime): ").strip()
+	password = getpass.getpass('Frontier Store Password (leave empty to be prompted at runtime): ').strip()
 	enableEDDN = input("Send market data to EDDN. No private information is sent. [Y/n]: ").strip().lower()
 		
 	Config = configparser.ConfigParser()

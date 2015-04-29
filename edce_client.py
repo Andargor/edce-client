@@ -30,11 +30,14 @@ try:
 		station = "/" + data.lastStarport.name
 	print("CMDR:\t" + data.commander.name)
 	print("System:\t" + data.lastSystem.name + station)
-	print("Ship:\t" + data.ships[shipId].name)
+
+	if shipId in data.ships:
+		print("Ship:\t" + data.ships[shipId].name)
 	
-	print("Attempting to post market data to EDDN...")
-	edce.eddn.postMarketData(data)
-	print("Done.")
+	if edce.config.getString('preferences','enable_eddn').lower().find('y') >= 0:
+		print("Attempting to post market data to EDDN...")
+		edce.eddn.postMarketData(data)
+		print("Done.")
 	
 except edce.error.Error as e:
 	print("EDCE: " + e.message)
