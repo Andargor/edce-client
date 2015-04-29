@@ -7,12 +7,18 @@ import configparser
 import requests
 import json
 import getpass
+import time
+import math
 
 from http.cookiejar import LWPCookieJar
 
 import edce.error
 import edce.config
 import edce.globals
+
+
+# This is hardcoded to be nice with the FD server
+minimumDelay = 120
 
 def checkInteractive():
 	ok = True
@@ -117,10 +123,36 @@ def initSession():
 
 	return session
 
+def writeQueryTime():
+	with open("lastQuery", "w") as f:
+		f.write("%d" % time.time())
+		f.close()
+
+def readQueryTime():
+	try:
+		with open("lastQuery", "r") as f:
+			t = int(f.readline())
+			f.close()
+			if edce.globals.debug:
+				print(">>>>>>>>>>>>>>>> readQueryTime %s" % t)			
+			return t
+	except FileNotFoundError:
+		pass
+	return 0
+		
 def performQuery(s=None):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> performQuery")
 
+	# This is to be nice with FD servers
+	t = readQueryTime()
+	delta = time.time() - t
+	if delta <= minimumDelay:
+		errstr = "Error: To avoid overloading the FD servers, you must wait %s seconds before your next query" % math.floor(minimumDelay - delta)
+		if edce.globals.debug and edce.globals.interactive:
+			print(errstr)
+		raise edce.error.ErrorQueryTimeout(errstr)			
+		
 	session = s
 	
 	if session is None:
@@ -160,5 +192,6 @@ def performQuery(s=None):
 	
 	res = submitProfile(session)
 	if checkProfileData(res):
+		writeQueryTime()
 		return res
 

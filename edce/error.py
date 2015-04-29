@@ -14,6 +14,9 @@ class ErrorConfig(Error):
 		
 class ErrorQuery(Error):
 	pass
+
+class ErrorQueryTimeout(Error):
+	pass	
 	
 class ErrorProfile(Error):
 	pass

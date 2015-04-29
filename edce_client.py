@@ -15,13 +15,12 @@ import json
 
 edce.globals.interactive = True
 edce.globals.debug = False
+edce.eddn.testSchema = True
 
 try:
 	res = edce.query.performQuery()
-	
-	
+		
 	data = edce.util.edict(res)
-	
 	edce.util.writeJSONLog(data.commander.name,data.lastSystem.name,data)
 	
 	shipId = "%s" % data.commander.currentShipId
