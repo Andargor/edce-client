@@ -29,9 +29,8 @@ try:
 	print("CMDR:\t" + data.commander.name)
 	print("System:\t" + data.lastSystem.name + station)
 
-	shipId = "%s" % data.commander.currentShipId
-	if shipId in data.ships:
-		print("Ship:\t" + data.ships[shipId].name)
+	if "ship" in data:
+		print("Ship:\t" + data.ship.name)
 	
 	if edce.config.getString('preferences','enable_eddn').lower().find('y') >= 0:
 		print("Attempting to post market data to EDDN...")
