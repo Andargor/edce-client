@@ -15,7 +15,7 @@ import json
 
 edce.globals.interactive = True
 edce.globals.debug = False
-edce.eddn.testSchema = True
+edce.eddn.testSchema = False
 
 try:
 	res = edce.query.performQuery()
@@ -23,13 +23,13 @@ try:
 	data = edce.util.edict(res)
 	edce.util.writeJSONLog(data.commander.name,data.lastSystem.name,data)
 	
-	shipId = "%s" % data.commander.currentShipId
 	station = ""
 	if data.commander.docked:
 		station = "/" + data.lastStarport.name
 	print("CMDR:\t" + data.commander.name)
 	print("System:\t" + data.lastSystem.name + station)
 
+	shipId = "%s" % data.commander.currentShipId
 	if shipId in data.ships:
 		print("Ship:\t" + data.ships[shipId].name)
 	

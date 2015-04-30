@@ -124,13 +124,18 @@ def initSession():
 	return session
 
 def writeQueryTime():
-	with open("lastQuery", "w") as f:
+	with open("last.time", "w") as f:
 		f.write("%d" % time.time())
 		f.close()
 
+def writeRawJSON(filename, data):
+	with open(filename, "w") as f:
+		f.write(data)
+		f.close()		
+		
 def readQueryTime():
 	try:
-		with open("lastQuery", "r") as f:
+		with open("last.time", "r") as f:
 			t = int(f.readline())
 			f.close()
 			if edce.globals.debug:
@@ -192,6 +197,7 @@ def performQuery(s=None):
 	
 	res = submitProfile(session)
 	if checkProfileData(res):
+		writeRawJSON("last.json",res)
 		writeQueryTime()
 		return res
 

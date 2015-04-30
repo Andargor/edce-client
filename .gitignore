@@ -60,4 +60,5 @@ target/
 *.xz
 cookies.txt
 *.ini
-lastQuery
+*.time
+*.json

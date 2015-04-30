@@ -36,8 +36,9 @@ def getString(section, key):
 	return res
 	
 def performSetup():
-	username = input("Frontier Store Username (leave empty to be prompted at runtime): ").strip()
-	password = getpass.getpass('Frontier Store Password (leave empty to be prompted at runtime): ').strip()
+	print("Enter your Frontier Store credentials here. You can leave your username or password empty, however you will be prompted every time you run the edce_client.py script.")
+	username = input("Frontier Store Username: ").strip()
+	password = getpass.getpass('Frontier Store Password: ').strip()
 	enableEDDN = input("Send market data to EDDN. No private information is sent. [Y/n]: ").strip().lower()
 		
 	Config = configparser.ConfigParser()
