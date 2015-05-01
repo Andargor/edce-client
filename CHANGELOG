@@ -1,5 +1,6 @@
 1.0.2:
 - Added commodity name conversion before uploading to EDDN
+- Changed ConfigParser to RawConfigParser to avoid interpolation
 
 1.0.1:
 - Better ship name retrieval

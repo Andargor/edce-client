@@ -7,7 +7,7 @@ import configparser
 import getpass
 import edce.error
 
-Config = configparser.ConfigParser()
+Config = configparser.RawConfigParser()
 Config.read('edce.ini')
 
 def ConfigSectionMap(section):
@@ -41,7 +41,7 @@ def performSetup():
 	password = getpass.getpass('Frontier Store Password: ').strip()
 	enableEDDN = input("Send market data to EDDN. No private information is sent. [Y/n]: ").strip().lower()
 		
-	Config = configparser.ConfigParser()
+	Config = configparser.RawConfigParser()
 	
 	Config.add_section('login')
 	Config.set('login','username',username)
