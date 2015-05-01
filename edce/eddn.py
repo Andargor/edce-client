@@ -16,6 +16,24 @@ import edce.error
 
 testSchema = True
 
+def convertCommodityEDDN(name):
+    if name == 'Marine Supplies':
+        return 'Marine Equipment'
+        
+    if name == 'Auto Fabricators':
+        return 'Auto-Fabricators'
+    
+    if name == 'Hazardous Environment Suits':
+        return 'H.E. Suits'
+    
+    if name == 'Atmospheric Extractors':
+        return 'Atmospheric Processors'
+    
+    if name == 'Non Lethal Weapons':
+        return 'Non-lethal Weapons'
+        
+    return name
+    
 def submitEDDN(data):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> submitEDDN")
@@ -67,7 +85,7 @@ def postMarketData(data):
 			schema = schema + '/test'
 			
 		for commodity in data.lastStarport.commodities:
-			message = {"header": {"softwareVersion": edce.globals.version, "softwareName": edce.globals.name, "uploaderID": clientID}, "$schemaRef": schema, "message": {"buyPrice": math.floor(commodity.buyPrice), "timestamp": st, "stationStock": math.floor(commodity.stock), "systemName": system, "stationName": station, "demand":  math.floor(commodity.demand), "sellPrice": math.floor(commodity.sellPrice), "itemName": commodity.name}}
+			message = {"header": {"softwareVersion": edce.globals.version, "softwareName": edce.globals.name, "uploaderID": clientID}, "$schemaRef": schema, "message": {"buyPrice": math.floor(commodity.buyPrice), "timestamp": st, "stationStock": math.floor(commodity.stock), "systemName": system, "stationName": station, "demand":  math.floor(commodity.demand), "sellPrice": math.floor(commodity.sellPrice), "itemName": convertCommodityEDDN(commodity.name)}}
 			if commodity.demandBracket > 0:
 				message['message']['demandLevel'] = getBracket(commodity.demandBracket)
 			elif commodity.stockBracket > 0:
