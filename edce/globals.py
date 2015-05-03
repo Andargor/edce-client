@@ -4,7 +4,7 @@ if sys.version_info.major < 3:
 	exit()
 
 name = "EDCE"
-version = "1.0.2"
+version = "1.0.3"
 	
 interactive = False
 debug = False

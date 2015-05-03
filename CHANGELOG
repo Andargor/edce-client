@@ -1,3 +1,7 @@
+1.0.3:
+- Added more commodity name conversion before uploading to EDDN
+- Filtered out commodities with categoryname == NonMarketable
+
 1.0.2:
 - Added commodity name conversion before uploading to EDDN
 - Changed ConfigParser to RawConfigParser to avoid interpolation

@@ -33,7 +33,7 @@ try:
 		print("Ship:\t" + data.ship.name)
 	
 	if edce.config.getString('preferences','enable_eddn').lower().find('y') >= 0:
-		print("Attempting to post market data to EDDN...")
+		print("Attempting to post market data to EDDN, this may take a minute...")
 		edce.eddn.postMarketData(data)
 		print("Done.")
 	
