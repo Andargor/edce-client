@@ -87,15 +87,15 @@ def postMarketData(data):
 	try:
 		clientID = hashlib.sha224(username.encode('utf-8')).hexdigest()
 		st = datetime.datetime.utcnow().isoformat()
-		system = data.lastSystem.name
-		station = data.lastStarport.name
+		system = data.lastSystem.name.strip()
+		station = data.lastStarport.name.strip()
 		schema = 'http://schemas.elite-markets.net/eddn/commodity/1'
 		if testSchema:
 			schema = schema + '/test'
 			
 		for commodity in data.lastStarport.commodities:
 			if "categoryname" in commodity and commodity.categoryname != "NonMarketable":
-				message = {"header": {"softwareVersion": edce.globals.version, "softwareName": edce.globals.name, "uploaderID": clientID}, "$schemaRef": schema, "message": {"buyPrice": math.floor(commodity.buyPrice), "timestamp": st, "stationStock": math.floor(commodity.stock), "systemName": system, "stationName": station, "demand":  math.floor(commodity.demand), "sellPrice": math.floor(commodity.sellPrice), "itemName": convertCommodityEDDN(commodity.name)}}
+				message = {"header": {"softwareVersion": edce.globals.version.strip(), "softwareName": edce.globals.name.strip(), "uploaderID": clientID}, "$schemaRef": schema, "message": {"buyPrice": math.floor(commodity.buyPrice), "timestamp": st, "stationStock": math.floor(commodity.stock), "systemName": system, "stationName": station, "demand":  math.floor(commodity.demand), "sellPrice": math.floor(commodity.sellPrice), "itemName": convertCommodityEDDN(commodity.name).strip()}}
 				if commodity.demandBracket > 0:
 					message['message']['demandLevel'] = getBracket(commodity.demandBracket)
 				elif commodity.stockBracket > 0:

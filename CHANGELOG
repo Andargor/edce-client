@@ -1,6 +1,7 @@
 1.0.3:
 - Added more commodity name conversion before uploading to EDDN
 - Filtered out commodities with categoryname == NonMarketable
+- Stripping strings sent to EDDN
 
 1.0.2:
 - Added commodity name conversion before uploading to EDDN
