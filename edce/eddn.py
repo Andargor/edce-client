@@ -40,7 +40,20 @@ def convertCommodityEDDN(name):
 
 	if name == 'Heliostatic Furnaces':
 		return 'Microbial Furnaces'
-	
+
+	#Issue #4
+	if name == 'Narcotics':
+		return 'Legal Drugs'
+
+	if name == 'Slaves':
+		return 'Slavery'
+
+	if name == 'Bio Reducing Lichen':
+		return 'Bioreducing Lichen'
+
+	if name == 'Basic Narcotics':
+		return 'Narcotics'
+		
 	return name
     
 def submitEDDN(data):
@@ -95,7 +108,7 @@ def postMarketData(data):
 			
 		for commodity in data.lastStarport.commodities:
 			if "categoryname" in commodity and commodity.categoryname != "NonMarketable":
-				message = {"header": {"softwareVersion": edce.globals.version.strip(), "softwareName": edce.globals.name.strip(), "uploaderID": clientID}, "$schemaRef": schema, "message": {"buyPrice": math.floor(commodity.buyPrice), "timestamp": st, "stationStock": math.floor(commodity.stock), "systemName": system, "stationName": station, "demand":  math.floor(commodity.demand), "sellPrice": math.floor(commodity.sellPrice), "itemName": convertCommodityEDDN(commodity.name).strip()}}
+				message = {"header": {"softwareVersion": edce.globals.version.strip(), "softwareName": edce.globals.name.strip(), "uploaderID": clientID}, "$schemaRef": schema, "message": {"buyPrice": math.floor(commodity.buyPrice), "timestamp": st, "stationStock": math.floor(commodity.stock), "systemName": system, "stationName": station, "demand":  math.floor(commodity.demand), "sellPrice": math.floor(commodity.sellPrice), "itemName": convertCommodityEDDN(commodity.name.strip()).strip()}}
 				if commodity.demandBracket > 0:
 					message['message']['demandLevel'] = getBracket(commodity.demandBracket)
 				elif commodity.stockBracket > 0:
