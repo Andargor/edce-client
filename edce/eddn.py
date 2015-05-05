@@ -16,6 +16,17 @@ import edce.error
 
 testSchema = True
 
+def convertCategoryEDDN(name):
+	#Issue #4
+	if name == 'Narcotics':
+		return 'Legal Drugs'
+
+	if name == 'Slaves':
+		return 'Slavery'
+		
+	return name
+
+
 def convertCommodityEDDN(name):
 	if name == 'Marine Supplies':
 		return 'Marine Equipment'
@@ -42,12 +53,6 @@ def convertCommodityEDDN(name):
 		return 'Microbial Furnaces'
 
 	#Issue #4
-	if name == 'Narcotics':
-		return 'Legal Drugs'
-
-	if name == 'Slaves':
-		return 'Slavery'
-
 	if name == 'Bio Reducing Lichen':
 		return 'Bioreducing Lichen'
 
