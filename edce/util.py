@@ -38,16 +38,12 @@ def convertUTF8(str):
 
 	try:
 		str.decode('utf-8')
-		#print("string is UTF-8, length %d bytes" % len(str))
 		return str
 	except AttributeError:
-		#print("AttributeError string is UTF-8, length %d bytes" % len(str))
 		return str
 	except UnicodeError:
-		#print("UnicodeError string is not UTF-8, length %d bytes" % len(str))
 		return str.encode('utf-8')
 	except UnicodeEncodeError:
-		#print("UnicodeEncodeError string is not UTF-8, length %d bytes" % len(str))
 		return str.encode('utf-8')
 				
 def writeUTF8(filename, data, compress=False):
@@ -66,7 +62,7 @@ def writeUTF8(filename, data, compress=False):
 				f.write(bytes(data, 'UTF-8'))
 				f.close()			
 	except:
-		errstr = "Error: writeLog FAIL"
+		errstr = "Error: writeUTF8 FAIL"
 		raise edce.error.ErrorLog(errstr)				
 				
 def writeJSONLog(name,system,data):
