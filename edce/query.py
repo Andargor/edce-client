@@ -15,6 +15,7 @@ from http.cookiejar import LWPCookieJar
 import edce.error
 import edce.config
 import edce.globals
+import edce.util
 
 
 # This is hardcoded to be nice with the FD server
@@ -122,16 +123,6 @@ def initSession():
 		session.cookies.save()
 
 	return session
-
-def writeQueryTime():
-	with open("last.time", "w") as f:
-		f.write("%d" % time.time())
-		f.close()
-
-def writeRawJSON(filename, data):
-	with open(filename, "w") as f:
-		f.write(data)
-		f.close()		
 		
 def readQueryTime():
 	try:
@@ -196,8 +187,10 @@ def performQuery(s=None):
 		raise edce.error.ErrorQuery(errstr)			
 	
 	res = submitProfile(session)
+
 	if checkProfileData(res):
-		writeRawJSON("last.json",res)
-		writeQueryTime()
-		return res
+		utf8res = edce.util.convertUTF8(res)
+		edce.util.writeUTF8("last.json",utf8res)
+		edce.util.writeUTF8("last.time","%d" % time.time())
+		return utf8res
 

@@ -1,3 +1,7 @@
+1.0.5:
+- Centralized file writing in util
+- Better handling of UTF-8 for accented characters
+
 1.0.4:
 - Release
 

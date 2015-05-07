@@ -32,18 +32,50 @@ class edict(dict):
             else:
                 return value
 
-def writeLog(filename, data):
+def convertUTF8(str):
+	if edce.globals.debug:
+		print(">>>>>>>>>>>>>>>> convertUTF8")
+
 	try:
-		with lzma.open(filename, "w") as f:
-			f.write(bytes(data, 'UTF-8'))
+		str.decode('utf-8')
+		#print("string is UTF-8, length %d bytes" % len(str))
+		return str
+	except AttributeError:
+		#print("AttributeError string is UTF-8, length %d bytes" % len(str))
+		return str
+	except UnicodeError:
+		#print("UnicodeError string is not UTF-8, length %d bytes" % len(str))
+		return str.encode('utf-8')
+	except UnicodeEncodeError:
+		#print("UnicodeEncodeError string is not UTF-8, length %d bytes" % len(str))
+		return str.encode('utf-8')
+				
+def writeUTF8(filename, data, compress=False):
+	if edce.globals.debug:
+		print(">>>>>>>>>>>>>>>> writeUTF8 " + filename)
+
+	try:
+		utf8filename = convertUTF8(filename)
+		utf8data = convertUTF8(data)
+		if compress:
+			with lzma.open(utf8filename, "wb") as f:
+				f.write(utf8data)
+				f.close()
+		else:
+			with open(utf8filename, "wb") as f:
+				f.write(bytes(data, 'UTF-8'))
+				f.close()			
 	except:
 		errstr = "Error: writeLog FAIL"
-		raise edce.error.ErrorLog(errstr)		
+		raise edce.error.ErrorLog(errstr)				
 				
 def writeJSONLog(name,system,data):
+	if edce.globals.debug:
+		print(">>>>>>>>>>>>>>>> writeJSONLog")
+
 	try:
 		logfile = "log/edce-{n}-{s}-{d:%Y%m%d%H%M%S}.xz".format(n=name, s=system, d=datetime.datetime.utcnow())
-		writeLog(logfile, json.dumps(data))
+		writeUTF8(logfile, json.dumps(data, ensure_ascii=False).encode('utf8'), True)
 	except:
 		errstr = "Error: writeJSONLog FAIL"
 		raise edce.error.ErrorLog(errstr)		
