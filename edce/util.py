@@ -58,8 +58,8 @@ def writeUTF8(filename, data, compress=False):
 				f.write(utf8data)
 				f.close()
 		else:
-			with open(utf8filename, "wb") as f:
-				f.write(bytes(data, 'UTF-8'))
+			with open(utf8filename, "w", encoding='utf8') as f:
+				f.write(bytes(data, "utf-8").decode("unicode_escape"))
 				f.close()			
 	except:
 		errstr = "Error: writeUTF8 FAIL"
