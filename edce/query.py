@@ -108,8 +108,8 @@ def checkRequireVerification(data):
 def initSession():
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> initSession")
-		
-	cookie_filename = "cookies.txt"
+
+	cookie_filename = edce.config.getString('paths','cookie_file')
 
 	session = requests.Session()
 	session.headers['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257'
@@ -124,7 +124,7 @@ def initSession():
 		
 def readQueryTime():
 	try:
-		with open("last.time", "r") as f:
+		with open(edce.config.getString('paths', 'time_file'), "r") as f:
 			t = int(f.readline())
 			f.close()
 			if edce.globals.debug:

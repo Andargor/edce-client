@@ -6,7 +6,7 @@ if sys.version_info.major < 3:
 import configparser
 import getpass
 import edce.error
-
+import os
 
 ConfigFilename = 'edce.ini'
 Config = configparser.RawConfigParser()
@@ -54,12 +54,12 @@ def performSetup():
 		
 	enableEDDN = enableEDDNInput == '' or enableEDDNInput == 'y'
 
-	writeConfig(username, password, enableEDDN)
+	writeConfig(username, password, enableEDDN, ".", ".")
 
 	print("Setup complete. {0} written.".format(ConfigFilename))
 	print("**NOTE: Your username and password are not stored encrypted. Make sure this file is protected.")
 
-def writeConfig(username, password, enableEDDN):
+def writeConfig(username, password, enableEDDN, cookieFilePath, timeFilePath):
 	global ConfigFilename
 
 	Config = configparser.RawConfigParser()
@@ -76,6 +76,10 @@ def writeConfig(username, password, enableEDDN):
 
 	Config.add_section('preferences')
 	Config.set('preferences','enable_eddn','Yes' if enableEDDN else 'No')
+
+	Config.add_section('paths')
+	Config.set('paths','cookie_file', os.path.join(cookieFilePath, "cookies.txt"))
+	Config.set('paths','time_file', os.path.join(timeFilePath, "last.time"))
 
 	with open(ConfigFilename,'w') as cfgfile:
 		Config.write(cfgfile)
