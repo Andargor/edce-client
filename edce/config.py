@@ -16,7 +16,7 @@ def setConfigFile(configFilename):
 	global Config
 	global ConfigFilename
 
-	configFilename = configFilename
+	ConfigFilename = configFilename
 	Config = configparser.RawConfigParser()
 	Config.read(configFilename)
 
@@ -46,13 +46,24 @@ def getString(section, key):
 	return res
 	
 def performSetup():
+
 	print("Enter your Frontier Store credentials here. You can leave your username or password empty, however you will be prompted every time you run the edce_client.py script.")
 	username = input("Frontier Store Username: ").strip()
 	password = getpass.getpass('Frontier Store Password: ').strip()
-	enableEDDN = input("Send market data to EDDN. No private information is sent. [Y/n]: ").strip().lower()
+	enableEDDNInput = input("Send market data to EDDN. No private information is sent. [Y/n]: ").strip().lower()
 		
+	enableEDDN = enableEDDNInput == '' or enableEDDNInput == 'y'
+
+	writeConfig(username, password, enableEDDN)
+
+	print("Setup complete. {0} written.".format(ConfigFilename))
+	print("**NOTE: Your username and password are not stored encrypted. Make sure this file is protected.")
+
+def writeConfig(username, password, enableEDDN):
+	global ConfigFilename
+
 	Config = configparser.RawConfigParser()
-	
+
 	Config.add_section('login')
 	Config.set('login','username',username)
 	Config.set('login','password',password)
@@ -64,14 +75,9 @@ def performSetup():
 	Config.set('urls','url_eddn','http://eddn-gateway.elite-markets.net:8080/upload/')
 
 	Config.add_section('preferences')
-	if enableEDDN == '' or enableEDDN == 'y':
-		Config.set('preferences','enable_eddn','Yes')
-	else:
-		Config.set('preferences','enable_eddn','No')
+	Config.set('preferences','enable_eddn','Yes' if enableEDDN else 'No')
 
 	with open(ConfigFilename,'w') as cfgfile:
 		Config.write(cfgfile)
 
-	print("Setup complete. {0} written.".format(ConfigFilename))
-	print("**NOTE: Your username and password are not stored encrypted. Make sure this file is protected.")
-
+	setConfigFile(ConfigFilename)

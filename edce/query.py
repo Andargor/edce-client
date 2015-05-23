@@ -62,15 +62,13 @@ def submitLogin(s, u, p):
 		raise edce.error.ErrorLogin(errstr)
 		
 		
-def submitVerification(s):
+def submitVerification(s, verificationCode):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> submitVerification")
-	code_raw = input("Verification Code required. You will receive an email from Frontier with a code in it. Enter it here: ")
-	code = code_raw.strip()
-	
-	if code:
+
+	if verificationCode:
 		url = edce.config.getString('urls','url_verification')
-		payload = { 'code' : code }
+		payload = { 'code' : verificationCode }
 		r = s.post(url, data=payload, verify=True)
 		if r.status_code == requests.codes.ok:
 			s.cookies.save()
@@ -136,7 +134,12 @@ def readQueryTime():
 		pass
 	return 0
 		
-def performQuery(s=None):
+def askVerificationCode():
+	code_raw = input("Verification Code required. You will receive an email from Frontier with a code in it. Enter it here: ")
+	code = code_raw.strip()
+	return code
+
+def performQuery(s=None, verificationCodeSupplyFn = askVerificationCode):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> performQuery")
 
@@ -171,8 +174,9 @@ def performQuery(s=None):
 			raise edce.error.ErrorQuery(errstr)			
 	
 	res = submitLogin(session, username, password)
-	if checkRequireVerification(res):	
-		submitVerification(session)
+	if checkRequireVerification(res):
+		vcode = verificationCodeSupplyFn()
+		submitVerification(session, vcode)
 		res = submitLogin(session, username, password)
 		if checkRequireVerification(res):
 			errstr = "Error: Verification failed."
