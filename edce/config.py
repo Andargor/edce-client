@@ -7,8 +7,18 @@ import configparser
 import getpass
 import edce.error
 
+
+ConfigFilename = 'edce.ini'
 Config = configparser.RawConfigParser()
-Config.read('edce.ini')
+Config.read(ConfigFilename)
+
+def setConfigFile(configFilename):
+	global Config
+	global ConfigFilename
+
+	configFilename = configFilename
+	Config = configparser.RawConfigParser()
+	Config.read(configFilename)
 
 def ConfigSectionMap(section):
 	dict1 = {}
@@ -58,10 +68,10 @@ def performSetup():
 		Config.set('preferences','enable_eddn','Yes')
 	else:
 		Config.set('preferences','enable_eddn','No')
-	
-	cfgfile = open('edce.ini','w')
-	Config.write(cfgfile)
-	cfgfile.close()
 
-	print("Setup complete. edce.ini written.")
+	with open(ConfigFilename,'w') as cfgfile:
+		Config.write(cfgfile)
+
+	print("Setup complete. {0} written.".format(ConfigFilename))
 	print("**NOTE: Your username and password are not stored encrypted. Make sure this file is protected.")
+
