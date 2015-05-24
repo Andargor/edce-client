@@ -54,12 +54,12 @@ def performSetup():
 		
 	enableEDDN = enableEDDNInput == '' or enableEDDNInput == 'y'
 
-	writeConfig(username, password, enableEDDN, ".", ".")
+	writeConfig(username, password, enableEDDN)
 
 	print("Setup complete. {0} written.".format(ConfigFilename))
 	print("**NOTE: Your username and password are not stored encrypted. Make sure this file is protected.")
 
-def writeConfig(username, password, enableEDDN, cookieFilePath, timeFilePath):
+def writeConfig(username, password, enableEDDN, cookieFilePath = ".", timeFilePath = ".", lastJSONPath = "."):
 	global ConfigFilename
 
 	Config = configparser.RawConfigParser()
@@ -80,7 +80,7 @@ def writeConfig(username, password, enableEDDN, cookieFilePath, timeFilePath):
 	Config.add_section('paths')
 	Config.set('paths','cookie_file', os.path.join(cookieFilePath, "cookies.txt"))
 	Config.set('paths','time_file', os.path.join(timeFilePath, "last.time"))
-	Config.set('paths','last_file', os.path.join(timeFilePath, "last.json"))
+	Config.set('paths','last_file', os.path.join(lastJSONPath, "last.json"))
 
 	with open(ConfigFilename,'w') as cfgfile:
 		Config.write(cfgfile)
