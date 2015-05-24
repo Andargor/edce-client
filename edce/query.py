@@ -124,6 +124,7 @@ def initSession():
 		
 def readQueryTime():
 	try:
+		print()
 		with open(edce.config.getString('paths', 'time_file'), "r") as f:
 			t = int(f.readline())
 			f.close()
@@ -194,7 +195,7 @@ def performQuery(s=None, verificationCodeSupplyFn = askVerificationCode):
 
 	if checkProfileData(res):
 		utf8res = edce.util.convertUTF8(res)
-		edce.util.writeUTF8("last.json",utf8res)
-		edce.util.writeUTF8("last.time","%d" % time.time())
+		edce.util.writeUTF8(edce.config.getString('paths', 'last_file'),utf8res)
+		edce.util.writeUTF8(edce.config.getString('paths', 'time_file'),"%d" % time.time())
 		return utf8res
 

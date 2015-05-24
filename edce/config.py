@@ -80,6 +80,7 @@ def writeConfig(username, password, enableEDDN, cookieFilePath, timeFilePath):
 	Config.add_section('paths')
 	Config.set('paths','cookie_file', os.path.join(cookieFilePath, "cookies.txt"))
 	Config.set('paths','time_file', os.path.join(timeFilePath, "last.time"))
+	Config.set('paths','last_file', os.path.join(timeFilePath, "last.json"))
 
 	with open(ConfigFilename,'w') as cfgfile:
 		Config.write(cfgfile)
