@@ -66,7 +66,7 @@ def submitEDDN(data):
 		print(">>>>>>>>>>>>>>>> submitEDDN")
 	url = edce.config.getString('urls','url_eddn')
 	headers = { 'content-type' : 'application/json; charset=utf8' }
-	r = requests.post(url, data=json.dumps(data), verify=True)
+	r = requests.post(url, data=json.dumps(data, ensure_ascii=False).encode('utf8'), verify=True)
 	if r.status_code == requests.codes.ok:
 		return r.text
 	else:
@@ -103,7 +103,8 @@ def postMarketData(data):
 		raise edce.error.ErrorEDDN(errstr)
 	
 	try:
-		clientID = hashlib.sha224(username.encode('utf-8')).hexdigest()
+		utf8username = edce.util.convertUTF8(username)
+		clientID = hashlib.sha224(utf8username.encode('utf-8')).hexdigest()
 		st = datetime.datetime.utcnow().isoformat()
 		system = data.lastSystem.name.strip()
 		station = data.lastStarport.name.strip()
@@ -121,10 +122,7 @@ def postMarketData(data):
 				submitEDDN(message)
 			else:
 				if edce.globals.debug:
-					print(">>>>>>>>>>>>>>>> postMarketData skipped " + commodity.name)				
+					print(">>>>>>>>>>>>>>>> postMarketData skipped " + commodity.name)
 	except:
 		errstr = "Error: EDDN postMarketData FAIL submit error"
 		raise edce.error.ErrorEDDN(errstr)
-		
-
-
