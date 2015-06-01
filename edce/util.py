@@ -46,4 +46,4 @@ def writeJSONLog(name,system,data):
 		writeLog(logfile, json.dumps(data))
 	except:
 		errstr = "Error: writeJSONLog FAIL"
-		raise edce.error.ErrorLog(errstr)		
+		raise edce.error.ErrorLog(errstr)
