@@ -17,49 +17,35 @@ import edce.error
 testSchema = True
 
 def convertCategoryEDDN(name):
-	#Issue #4
-	if name == 'Narcotics':
-		return 'Legal Drugs'
-
-	if name == 'Slaves':
-		return 'Slavery'
-		
-	return name
+    commoditiesCategory                 = {}
+    commoditiesCategory['Narcotics']    = 'Legal Drugs'
+    commoditiesCategory['Slaves']       = 'Slavery'
+    
+    if name in commoditiesCategory:
+        return commoditiesCategory[name]
+    
+    return name
 
 
 def convertCommodityEDDN(name):
-	if name == 'Marine Supplies':
-		return 'Marine Equipment'
+    commodities                                 = {}
+    
+    commodities['Agricultural Medicines']       = 'Agri-Medicines'
+    commodities['Atmospheric Extractors']       = 'Atmospheric Processors'
+    commodities['Auto Fabricators']             = 'Auto-Fabricators'
+    commodities['Basic Narcotics']              = 'Narcotics' #Issue #4
+    commodities['Bio Reducing Lichen']          = 'Bioreducing Lichen' #Issue #4
+    commodities['Hazardous Environment Suits']  = 'H.E. Suits'
+    commodities['Heliostatic Furnaces']         = 'Microbial Furnaces'
+    commodities['Marine Supplies']              = 'Marine Equipment'
+    commodities['Non Lethal Weapons']           = 'Non-lethal Weapons'
+    commodities['Terrain Enrichment Systems']   = 'Land Enrichment Systems'
+    
+    if name in commodities:
+        return commodities[name]
+    
+    return name
 
-	if name == 'Auto Fabricators':
-		return 'Auto-Fabricators'
-
-	if name == 'Hazardous Environment Suits':
-		return 'H.E. Suits'
-
-	if name == 'Atmospheric Extractors':
-		return 'Atmospheric Processors'
-
-	if name == 'Non Lethal Weapons':
-		return 'Non-lethal Weapons'
-
-	if name == 'Terrain Enrichment Systems':
-		return 'Land Enrichment Systems'
-
-	if name == 'Agricultural Medicines':
-		return 'Agri-Medicines'
-
-	if name == 'Heliostatic Furnaces':
-		return 'Microbial Furnaces'
-
-	#Issue #4
-	if name == 'Bio Reducing Lichen':
-		return 'Bioreducing Lichen'
-
-	if name == 'Basic Narcotics':
-		return 'Narcotics'
-		
-	return name
     
 def submitEDDN(data):
 	if edce.globals.debug:
