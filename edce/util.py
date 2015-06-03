@@ -74,4 +74,4 @@ def writeJSONLog(name,system,data):
 		writeUTF8(logfile, json.dumps(data, ensure_ascii=False).encode('utf8'), True)
 	except:
 		errstr = "Error: writeJSONLog FAIL"
-		raise edce.error.ErrorLog(errstr)		
+		raise edce.error.ErrorLog(errstr)
