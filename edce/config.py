@@ -12,6 +12,19 @@ ConfigFilename = 'edce.ini'
 Config = configparser.RawConfigParser()
 Config.read(ConfigFilename)
 
+def checkMissingPaths(config):
+	if not config.has_section('paths'):
+		config.add_section('paths')
+
+	if not config.has_section('paths') or not config.has_option('paths','cookie_file'):
+		config.set('paths','cookie_file', os.path.join(".", "cookies.txt"))
+
+	if not config.has_option('paths','time_file'):
+		config.set('paths','time_file', os.path.join(".", "last.time"))
+
+	if not config.has_option('paths','last_file'):
+		config.set('paths','last_file', os.path.join(".", "last.json"))
+
 def setConfigFile(configFilename):
 	global Config
 	global ConfigFilename
@@ -86,3 +99,5 @@ def writeConfig(username, password, enableEDDN, cookieFilePath = ".", timeFilePa
 		Config.write(cfgfile)
 
 	setConfigFile(ConfigFilename)
+
+checkMissingPaths(Config)
