@@ -1,6 +1,7 @@
 1.0.7:
 - Simplify conversion functions for commodities
 - EDDN commodities schema v2 support
+- post-1.3 demand fix
 
 1.0.6:
 - Release
