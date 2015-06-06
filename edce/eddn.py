@@ -118,10 +118,10 @@ def postMarketData(data):
                 tmpCommodity["name"]        = convertCommodityEDDN(commodity.name.strip()).strip()
                 
                 tmpCommodity["buyPrice"]    = math.floor(commodity.buyPrice)
-                tmpCommodity["supply"]      = math.floor(commodity.stock)
+                tmpCommodity["supply"]      = commodity.stockBracket and math.floor(commodity.stock)
                 
                 tmpCommodity["sellPrice"]   = math.floor(commodity.sellPrice)
-                tmpCommodity["demand"]      = math.floor(commodity.demand)
+                tmpCommodity["demand"]      = commodity.demandBracket and math.floor(commodity.demand)
                 
                 if commodity.stockBracket > 0:
                     tmpCommodity['supplyLevel'] = getBracket(commodity.stockBracket)
