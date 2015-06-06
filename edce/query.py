@@ -62,15 +62,13 @@ def submitLogin(s, u, p):
 		raise edce.error.ErrorLogin(errstr)
 		
 		
-def submitVerification(s):
+def submitVerification(s, verificationCode):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> submitVerification")
-	code_raw = input("Verification Code required. You will receive an email from Frontier with a code in it. Enter it here: ")
-	code = code_raw.strip()
-	
-	if code:
+
+	if verificationCode:
 		url = edce.config.getString('urls','url_verification')
-		payload = { 'code' : code }
+		payload = { 'code' : verificationCode }
 		r = s.post(url, data=payload, verify=True)
 		if r.status_code == requests.codes.ok:
 			s.cookies.save()
@@ -110,8 +108,8 @@ def checkRequireVerification(data):
 def initSession():
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> initSession")
-		
-	cookie_filename = "cookies.txt"
+
+	cookie_filename = edce.config.getString('paths','cookie_file')
 
 	session = requests.Session()
 	session.headers['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257'
@@ -126,7 +124,8 @@ def initSession():
 		
 def readQueryTime():
 	try:
-		with open("last.time", "r") as f:
+		print()
+		with open(edce.config.getString('paths', 'time_file'), "r") as f:
 			t = int(f.readline())
 			f.close()
 			if edce.globals.debug:
@@ -136,7 +135,12 @@ def readQueryTime():
 		pass
 	return 0
 		
-def performQuery(s=None):
+def askVerificationCode():
+	code_raw = input("Verification Code required. You will receive an email from Frontier with a code in it. Enter it here: ")
+	code = code_raw.strip()
+	return code
+
+def performQuery(s=None, verificationCodeSupplyFn = askVerificationCode):
 	if edce.globals.debug:
 		print(">>>>>>>>>>>>>>>> performQuery")
 
@@ -171,8 +175,9 @@ def performQuery(s=None):
 			raise edce.error.ErrorQuery(errstr)			
 	
 	res = submitLogin(session, username, password)
-	if checkRequireVerification(res):	
-		submitVerification(session)
+	if checkRequireVerification(res):
+		vcode = verificationCodeSupplyFn()
+		submitVerification(session, vcode)
 		res = submitLogin(session, username, password)
 		if checkRequireVerification(res):
 			errstr = "Error: Verification failed."
@@ -190,7 +195,7 @@ def performQuery(s=None):
 
 	if checkProfileData(res):
 		utf8res = edce.util.convertUTF8(res)
-		edce.util.writeUTF8("last.json",utf8res)
-		edce.util.writeUTF8("last.time","%d" % time.time())
+		edce.util.writeUTF8(edce.config.getString('paths', 'last_file'),utf8res)
+		edce.util.writeUTF8(edce.config.getString('paths', 'time_file'),"%d" % time.time())
 		return utf8res
 

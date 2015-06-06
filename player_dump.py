@@ -1,4 +1,6 @@
 import sys
+import edce.config
+
 if sys.version_info.major < 3:
 	print("You need to use Python 3.x, e.g. python3 <filename>")
 	exit()
@@ -15,7 +17,7 @@ def alignNum(title, number):
 
 player_json = ''
 try:
-	with open("last.json", "r") as f:
+	with open(edce.config.getString('paths', 'last_file'), "r") as f:
 			player_json = f.readline()
 			f.close()
 except:
