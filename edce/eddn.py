@@ -39,6 +39,7 @@ def convertCommodityEDDN(name):
     commodities['Heliostatic Furnaces']         = 'Microbial Furnaces'
     commodities['Marine Supplies']              = 'Marine Equipment'
     commodities['Non Lethal Weapons']           = 'Non-lethal Weapons'
+    commodities['S A P8 Core Container']        = 'SAP 8 Core Container'
     commodities['Terrain Enrichment Systems']   = 'Land Enrichment Systems'
     
     if name in commodities:
