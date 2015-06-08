@@ -89,6 +89,11 @@ def postMarketData(data):
         errstr = "Error: EDDN postMarketData FAIL pilot must be docked"
         raise edce.error.ErrorEDDN(errstr)
     
+    # Issue 12: No market
+    if "commodities" not in data.lastStarport:
+        errstr = "Error: EDDN postMarketData FAIL station must have a market"
+        raise edce.error.ErrorEDDN(errstr)
+    
     try:
         utf8username = edce.util.convertUTF8(username)
         clientID = hashlib.sha224(utf8username.encode('utf-8')).hexdigest()
