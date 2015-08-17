@@ -9,7 +9,9 @@ The EDCE client queries your Commander data on the Elite Dangerous Companion sit
 
 ## Installation
 
-* Requirements: Python 3.3 or higher
+* Requirements:
+* - Python 3.3 or higher
+* - Python requests library: `pip3 install requests`
 * Run the client-setup.py program: python3 client-setup.py
 * Enter your Frontier store credentials (NOTE: The password is stored unencrypted in the edce.ini file. You can leave the password blank, however this means you will need to run the client in interactive mode and you will be prompted to enter the password every time)
 
