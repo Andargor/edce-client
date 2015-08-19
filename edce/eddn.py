@@ -14,7 +14,7 @@ import edce.config
 import edce.globals
 import edce.error
 
-testSchema = True
+testSchema = False
 
 def convertCategoryEDDN(name):
     commoditiesCategory                 = {}
