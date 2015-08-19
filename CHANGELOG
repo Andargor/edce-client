@@ -1,3 +1,6 @@
+1.0.9:
+- Default to not using the test EDDN schema, since it is no longer supported
+
 1.0.8:
 - Release
 
