@@ -42,10 +42,13 @@ if "ships" in data:
 	
 	all_ships = {}
 	for ship in data.ships:
-		station = data.ships[ship].starsystem.name + "/" + data.ships[ship].station.name
-		if not station in all_ships:
-			all_ships[station]=[]
-		all_ships[station].append(data.ships[ship].name)
+		starsystem = data.ships[ship].starsystem
+		starsystem_station = data.ships[ship].station
+		if starsystem and starsystem_station:
+		        station = starsystem.name + "/" + starsystem_station.name
+		        if not station in all_ships:
+			        all_ships[station]=[]
+		        all_ships[station].append(data.ships[ship].name)
 
 	for s in OrderedDict(sorted(all_ships.items())):
 		print(alignStr(s,", ".join(all_ships[s])))
