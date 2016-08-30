@@ -129,6 +129,12 @@ def postMarketData(data):
                 tmpCommodity["sellPrice"]   = math.floor(commodity.sellPrice)
                 tmpCommodity["demand"]      = commodity.demandBracket and math.floor(commodity.demand)
                 
+                if commodity.stockBracket == '':
+                    commodity.stockBracket = 0
+				
+                if commodity.demandBracket == '':
+                    commodity.demandBracket = 0
+			
                 if commodity.stockBracket > 0:
                     tmpCommodity['supplyLevel'] = getBracket(commodity.stockBracket)
                 if commodity.demandBracket > 0:
