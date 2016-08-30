@@ -57,7 +57,7 @@ def submitEDDN(data):
     if r.status_code == requests.codes.ok:
         return r.text
     else:
-        errstr = "Error: EDDN submitEDDN FAIL %s" % r.status_code
+        errstr = "Error: EDDN submitEDDN FAIL %s error: %s" % (r.status_code, r.text)
         raise edce.error.ErrorEDDN(errstr)    
 
 def getBracket(level):
@@ -124,15 +124,21 @@ def postMarketData(data):
                 tmpCommodity["name"]        = convertCommodityEDDN(commodity.name.strip()).strip()
                 
                 tmpCommodity["buyPrice"]    = math.floor(commodity.buyPrice)
-                tmpCommodity["supply"]      = commodity.stockBracket and math.floor(commodity.stock)
-                
                 tmpCommodity["sellPrice"]   = math.floor(commodity.sellPrice)
-                tmpCommodity["demand"]      = commodity.demandBracket and math.floor(commodity.demand)
                 			
-                if commodity.stockBracket != '' and commodity.stockBracket > 0:
-                    tmpCommodity['supplyLevel'] = getBracket(commodity.stockBracket)
-                if commodity.demandBracket != '' and commodity.demandBracket > 0:
-                    tmpCommodity['demandLevel'] = getBracket(commodity.demandBracket)
+                if commodity.stockBracket != '':
+                    tmpCommodity["supply"]      = commodity.stockBracket and math.floor(commodity.stock)
+                    if commodity.stockBracket > 0:
+                        tmpCommodity['supplyLevel'] = getBracket(commodity.stockBracket)
+                else:
+                    tmpCommodity["supply"] = 0
+						
+                if commodity.demandBracket != '':
+                    tmpCommodity["demand"]      = commodity.demandBracket and math.floor(commodity.demand)
+                    if commodity.demandBracket > 0:
+                        tmpCommodity['demandLevel'] = getBracket(commodity.demandBracket)
+                else:
+                    tmpCommodity["demand"] = 0
                     
                 message['message']['commodities'].append(tmpCommodity)
                     
@@ -144,6 +150,6 @@ def postMarketData(data):
             
         submitEDDN(message)
      
-    except:
-        errstr = "Error: EDDN postMarketData FAIL submit error"
+    except Exception as error:
+        errstr = "Error: EDDN postMarketData FAIL submit error Reason: %s " % error
         raise edce.error.ErrorEDDN(errstr)
