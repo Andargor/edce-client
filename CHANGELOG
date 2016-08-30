@@ -1,4 +1,6 @@
 1.0.9:
+- fixed empty demandBracket and stockBracket errors
+- Updated search for players ships to pass indices to data.ships so it can be retrieved
 - Default to not using the test EDDN schema, since it is no longer supported
 
 1.0.8:
