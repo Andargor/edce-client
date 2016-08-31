@@ -120,25 +120,19 @@ def postMarketData(data):
         for commodity in data.lastStarport.commodities:
             tmpCommodity = {}
         
-            if "categoryname" in commodity and commodity.categoryname != "NonMarketable":
+            if "categoryname" in commodity and commodity.categoryname != "NonMarketable" and commodity.stockBracket != '' and commodity.demandBracket != '':
                 tmpCommodity["name"]        = convertCommodityEDDN(commodity.name.strip()).strip()
                 
                 tmpCommodity["buyPrice"]    = math.floor(commodity.buyPrice)
                 tmpCommodity["sellPrice"]   = math.floor(commodity.sellPrice)
                 			
-                if commodity.stockBracket != '':
-                    tmpCommodity["supply"]      = commodity.stockBracket and math.floor(commodity.stock)
-                    if commodity.stockBracket > 0:
-                        tmpCommodity['supplyLevel'] = getBracket(commodity.stockBracket)
-                else:
-                    tmpCommodity["supply"] = 0
+                tmpCommodity["supply"]      = commodity.stockBracket and math.floor(commodity.stock)
+                if commodity.stockBracket > 0:
+                    tmpCommodity['supplyLevel'] = getBracket(commodity.stockBracket)
 						
-                if commodity.demandBracket != '':
-                    tmpCommodity["demand"]      = commodity.demandBracket and math.floor(commodity.demand)
-                    if commodity.demandBracket > 0:
-                        tmpCommodity['demandLevel'] = getBracket(commodity.demandBracket)
-                else:
-                    tmpCommodity["demand"] = 0
+                tmpCommodity["demand"]      = commodity.demandBracket and math.floor(commodity.demand)
+                if commodity.demandBracket > 0:
+                    tmpCommodity['demandLevel'] = getBracket(commodity.demandBracket)
                     
                 message['message']['commodities'].append(tmpCommodity)
                     
