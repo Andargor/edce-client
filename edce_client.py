@@ -16,6 +16,7 @@ import json
 edce.globals.interactive = True
 edce.globals.debug = False
 edce.eddn.testSchema = False
+edce.eddn.schemaVersion = 3
 
 try:
 	res = edce.query.performQuery()
