@@ -1,4 +1,9 @@
+1.1.0:
+- Release
+
 1.0.9:
+- Using EDDN v3 market schema
+- Using key-value pairs instead of edict iteration for >3.4 compatibility
 - fixed empty demandBracket and stockBracket errors
 - Updated search for players ships to pass indices to data.ships so it can be retrieved
 - Default to not using the test EDDN schema, since it is no longer supported
