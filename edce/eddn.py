@@ -175,12 +175,12 @@ def postMarketData(data):
                 
                 if "categoryname" in commodity and commodity.categoryname != "NonMarketable" and commodity.stockBracket != '' and commodity.demandBracket != '':
                     tmpCommodity["name"] = commodity.name
-                    tmpCommodity["meanPrice"] = commodity.meanPrice
-                    tmpCommodity["buyPrice"] = commodity.buyPrice
-                    tmpCommodity["stock"] = commodity.stock
+                    tmpCommodity["meanPrice"] = int(commodity.meanPrice)
+                    tmpCommodity["buyPrice"] = int(commodity.buyPrice)
+                    tmpCommodity["stock"] = int(commodity.stock)
                     tmpCommodity["stockBracket"] = commodity.stockBracket
-                    tmpCommodity["sellPrice"] = commodity.sellPrice
-                    tmpCommodity["demand"] = commodity.demand
+                    tmpCommodity["sellPrice"] = int(commodity.sellPrice)
+                    tmpCommodity["demand"] = int(commodity.demand)
                     tmpCommodity["demandBracket"] = commodity.demandBracket
                     
                     if len(commodity.statusFlags) > 0:
