@@ -27,21 +27,21 @@ except:
 data = edce.util.edict(player_json)
 
 station = ""
-if data.commander.docked:
-    station = "/" + data.lastStarport.name
+if data.profile.commander.docked:
+    station = "/" + data.profile.lastStarport.name
     
-print(alignStr("CMDR:",data.commander.name))
-print(alignStr("System:",data.lastSystem.name + station))
-print(alignNum("Credits:",data.commander.credits))
+print(alignStr("CMDR:",data.profile.commander.name))
+print(alignStr("System:",data.profile.lastSystem.name + station))
+print(alignNum("Credits:",data.profile.commander.credits))
 
-if "ship" in data:
-    print(alignStr("Ship:",data.ship.name))
+if "ship" in data.profile:
+    print(alignStr("Ship:",data.profile.ship.name))
 
-if "ships" in data:
+if "ships" in data.profile:
     print("\n========== All ships: ==========")
     
     all_ships = {}
-    for ship, shipEntry in data.ships.items():
+    for ship, shipEntry in data.profile.ships.items():
         starsystem = shipEntry.starsystem
         starsystem_station = shipEntry.station
         if starsystem and starsystem_station:
@@ -54,7 +54,7 @@ if "ships" in data:
     for s in OrderedDict(sorted(all_ships.items())):
         print(alignStr(s,", ".join(all_ships[s])))
         
-if "stats" in data and "explore" in data.stats and "lastVisitedStarSystems" in data.stats.explore:
+if "stats" in data and "explore" in data.profile.stats and "lastVisitedStarSystems" in data.profile.stats.explore:
     print("\n========== Last Visited: ==========")
-    for s in data.stats.explore.lastVisitedStarSystems:
+    for s in data.profile.stats.explore.lastVisitedStarSystems:
         print(s)
