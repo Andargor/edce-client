@@ -12,11 +12,21 @@ import edce.config
 import edce.globals
 
 import json
+import argparse
 
 edce.globals.interactive = True
 edce.globals.debug = False
 edce.eddn.testSchema = False
 edce.eddn.schemaVersion = 3
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-v","--version", help="show current version", action="store_true")
+args = parser.parse_args()
+if args.version:
+	print("EDCE Version " + edce.globals.version)
+	quit()
+
+
 
 try:
 #New for cAPI 2.4, will perform three queries and combine them in one string

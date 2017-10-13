@@ -1,3 +1,6 @@
+2.0.1:
+- Added --version command line argumen
+
 2.0.0:
 - cAPI 2.4 changes
 - BREAKING CHANGE: Cleaned up schema versions (2 no longer supported)
