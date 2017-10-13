@@ -19,7 +19,7 @@ import edce.util
 
 
 # This is hardcoded to be nice with the FD server
-minimumDelay = 120
+minimumDelay = 60
 
 def checkInteractive():
 	ok = True
@@ -32,19 +32,25 @@ def checkInteractive():
 	if not ok:
 		raise edce.error.Error('Cannot run in non-interactive mode if either the username or password is not set. Set edce.globals.interactive=True, or run setup.py and enter a username and password')
 
-def submitProfile(s):
+def submitQuery(s, url):
 	if edce.globals.debug:
-		print(">>>>>>>>>>>>>>>> submitProfile")
-	url = edce.config.getString('urls','url_profile')
+		print(">>>>>>>>>>>>>>>> submitQuery")
 	r = s.get(url, verify=True)
 	if r.status_code == requests.codes.ok:
 		s.cookies.save()
 		return r.text
 	else:
-		errstr = "Error: submitProfile FAIL %s" % r.status_code
+		errstr = "Error: submitQuery FAIL %s" % r.status_code
 		if edce.globals.debug and edce.globals.interactive:
 			print(errstr)
 		raise edce.error.ErrorProfile(errstr)
+
+#Backward compatibility
+def submitProfile(s):
+	if edce.globals.debug:
+		print(">>>>>>>>>>>>>>>> submitProfile")
+	url = edce.config.getString('urls','url_profile')
+	return submitQuery(s, url)
 
 def submitLogin(s, u, p):
 	if edce.globals.debug:
@@ -191,8 +197,13 @@ def performQuery(s=None, verificationCodeSupplyFn = askVerificationCode):
 			print(errstr)		
 		raise edce.error.ErrorQuery(errstr)			
 	
-	res = submitProfile(session)
-
+#Assemble one JSON object from the string result of the three endpoints	
+	res = '{'
+	res += '"profile":' + submitQuery(session, edce.config.getString('urls','url_profile'))
+	res += ', "market":'+ submitQuery(session, edce.config.getString('urls','url_market'))
+	res += ', "shipyard":' + submitQuery(session, edce.config.getString('urls','url_shipyard'))
+	res += '}'
+	
 	if checkProfileData(res):
 		utf8res = edce.util.convertUTF8(res)
 		edce.util.writeUTF8(edce.config.getString('paths', 'last_file'),utf8res)

@@ -25,6 +25,21 @@ def checkMissingPaths(config):
 	if not config.has_option('paths','last_file'):
 		config.set('paths','last_file', os.path.join(".", "last.json"))
 
+#New top level paths for cAPI 2.4 for legacy installs
+	if not config.has_section('urls'):
+		config.add_section('urls')
+
+	config.set('urls','url_eddn', 'https://eddn.edcd.io:4430/upload/')	
+	
+	if not config.has_option('urls','url_profile'):
+		config.set('urls','url_profile', 'https://companion.orerve.net/profile')		
+		
+	if not config.has_option('urls','url_market'):
+		config.set('urls','url_market', 'https://companion.orerve.net/market')		
+		
+	if not config.has_option('urls','url_shipyard'):
+		config.set('urls','url_shipyard', 'https://companion.orerve.net/shipyard')		
+	
 def setConfigFile(configFilename):
 	global Config
 	global ConfigFilename
@@ -85,7 +100,9 @@ def writeConfig(username, password, enableEDDN, cookieFilePath = ".", timeFilePa
 	Config.set('urls','url_login','https://companion.orerve.net/user/login')
 	Config.set('urls','url_verification','https://companion.orerve.net/user/confirm')
 	Config.set('urls','url_profile','https://companion.orerve.net/profile')
-	Config.set('urls','url_eddn','http://eddn-gateway.elite-markets.net:8080/upload/')
+	Config.set('urls','url_market','https://companion.orerve.net/market')
+	Config.set('urls','url_shipyard','https://companion.orerve.net/shipyard')
+	Config.set('urls','url_eddn','https://eddn.edcd.io:4430/upload/')
 
 	Config.add_section('preferences')
 	Config.set('preferences','enable_eddn','Yes' if enableEDDN else 'No')

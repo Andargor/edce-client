@@ -15,40 +15,8 @@ import edce.globals
 import edce.error
 
 testSchema = False
-schemaVersion = 2
+schemaVersion = 3
 
-def convertCategoryEDDN(name):
-    commoditiesCategory                 = {}
-    commoditiesCategory['Narcotics']    = 'Legal Drugs'
-    commoditiesCategory['Slaves']       = 'Slavery'
-    
-    if name in commoditiesCategory:
-        return commoditiesCategory[name]
-    
-    return name
-
-
-def convertCommodityEDDN(name):
-    commodities                                 = {}
-    
-    commodities['Agricultural Medicines']       = 'Agri-Medicines'
-    commodities['Atmospheric Extractors']       = 'Atmospheric Processors'
-    commodities['Auto Fabricators']             = 'Auto-Fabricators'
-    commodities['Basic Narcotics']              = 'Narcotics' #Issue #4
-    commodities['Bio Reducing Lichen']          = 'Bioreducing Lichen' #Issue #4
-    commodities['Hazardous Environment Suits']  = 'H.E. Suits'
-    commodities['Heliostatic Furnaces']         = 'Microbial Furnaces'
-    commodities['Marine Supplies']              = 'Marine Equipment'
-    commodities['Non Lethal Weapons']           = 'Non-lethal Weapons'
-    commodities['S A P8 Core Container']        = 'SAP 8 Core Container'
-    commodities['Terrain Enrichment Systems']   = 'Land Enrichment Systems'
-    
-    if name in commodities:
-        return commodities[name]
-    
-    return name
-
-    
 def submitEDDN(data):
     if edce.globals.debug:
         print(">>>>>>>>>>>>>>>> submitEDDN")
@@ -70,7 +38,7 @@ def getBracket(level):
         return "High"
     return ""
         
-def postMarketData(data):
+def postMarketData(data, system):
     if edce.globals.debug:
         print(">>>>>>>>>>>>>>>> postMarketData")
 
@@ -84,23 +52,17 @@ def postMarketData(data):
         errstr = "No username"
         raise edce.error.ErrorEDDN(errstr)
     
-    if "docked" in data.commander and data.commander.docked:
-        pass
-    else:
-        errstr = "Pilot must be docked"
-        raise edce.error.ErrorEDDN(errstr)
-    
     # Issue 12: No market
-    if "commodities" not in data.lastStarport:
-        errstr = "Station must have a market"
+    if "commodities" not in data:
+        errstr = "Station must have a market, or no commodities found"
         raise edce.error.ErrorEDDN(errstr)
     
     try:
         utf8username = edce.util.convertUTF8(username)
         clientID = hashlib.sha224(utf8username.encode('utf-8')).hexdigest()
        
-        if schemaVersion == 2:
-            schema = 'http://schemas.elite-markets.net/eddn/commodity/2'
+        if schemaVersion == 3:
+            schema = 'https://eddn.edcd.io/schemas/commodity/3'
             if testSchema:
                 schema = schema + '/test'
             
@@ -116,63 +78,15 @@ def postMarketData(data):
             message['header']['uploaderID']         = clientID
             
             message['message']                      = {}
-            message['message']['timestamp']         = datetime.datetime.utcnow().isoformat()
-            message['message']['systemName']        = data.lastSystem.name.strip()
-            message['message']['stationName']       = data.lastStarport.name.strip()
+            message['message']['timestamp']         = datetime.datetime.utcnow().isoformat() + "Z"
+            message['message']['systemName']        = system.strip()
+            message['message']['stationName']       = data.name.strip()
             
             message['message']['commodities']       = []
-                 
-            for commodity in data.lastStarport.commodities:
-                tmpCommodity = {}
-            
-                if "categoryname" in commodity and commodity.categoryname != "NonMarketable" and commodity.stockBracket != '' and commodity.demandBracket != '':
-                    tmpCommodity["name"]        = convertCommodityEDDN(commodity.name.strip()).strip()
-                    
-                    tmpCommodity["buyPrice"]    = math.floor(commodity.buyPrice)
-                    tmpCommodity["sellPrice"]   = math.floor(commodity.sellPrice)
-                                
-                    tmpCommodity["supply"]      = commodity.stockBracket and math.floor(commodity.stock)
-                    if commodity.stockBracket > 0:
-                        tmpCommodity['supplyLevel'] = getBracket(commodity.stockBracket)
-                            
-                    tmpCommodity["demand"]      = commodity.demandBracket and math.floor(commodity.demand)
-                    if commodity.demandBracket > 0:
-                        tmpCommodity['demandLevel'] = getBracket(commodity.demandBracket)
-                        
-                    message['message']['commodities'].append(tmpCommodity)
-                        
-                else:
-                    if edce.globals.debug:
-                        print(">>>>>>>>>>>>>>>> postMarketData skipped " + commodity.name)
-                        
-                del tmpCommodity
 
-        elif schemaVersion == 3:
-            schema = 'http://schemas.elite-markets.net/eddn/commodity/3'
-            if testSchema:
-                schema = schema + '/test'
-            
-            if edce.globals.debug:
-                print("Using schema " + schema)            
-            
-            message                                 = {}
-            message['$schemaRef']                   = schema
-            
-            message['header']                       = {}
-            message['header']['softwareVersion']    = edce.globals.version.strip()
-            message['header']['softwareName']       = edce.globals.name.strip()
-            message['header']['uploaderID']         = clientID
-            
-            message['message']                      = {}
-            message['message']['timestamp']         = datetime.datetime.utcnow().isoformat()
-            message['message']['systemName']        = data.lastSystem.name.strip()
-            message['message']['stationName']       = data.lastStarport.name.strip()
-            
-            message['message']['commodities']       = []
-                 
-            for commodity in data.lastStarport.commodities:           
+            for commodity in data.commodities:           
                 tmpCommodity = {}
-                
+
                 if "categoryname" in commodity and commodity.categoryname != "NonMarketable" and commodity.stockBracket != '' and commodity.demandBracket != '':
                     tmpCommodity["name"] = commodity.name
                     tmpCommodity["meanPrice"] = int(commodity.meanPrice)
