@@ -1,3 +1,5 @@
+# ** NOTE **: Due to new authantication implemented by Frontier, EDCE no longer works. Please see the following if you wish to contribute: https://github.com/Andargor/edce-client/issues/30 **
+
 # edce-client
 Elite Dangerous Companion Emulator
 
